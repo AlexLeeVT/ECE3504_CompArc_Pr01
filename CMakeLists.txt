@@ -9,4 +9,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # build main
-add_executable(main main.cpp main.hpp)
+add_executable(mips_disassembler main.cpp main.hpp)
