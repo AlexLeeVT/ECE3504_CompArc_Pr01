@@ -1,0 +1,32 @@
+How to build the project:
+    Software:
+        Visual Studio 2022 with "C++ CMake tools for Windows" installed
+            - if this is not installed, the project will not build.
+            - it can be found in the Visual Studio 2022 installer then modifying 
+                Visual Studio 2022 and clicking the "Optional" dropdown arrow. There
+                the "C++ CMake tools for Windows" should be checked and installed.
+    
+    How to build the project:
+        - extract files from "ECE3504_CompArc_Pr01-main.zip"
+        - open Visual Studio 2022(VS) in the folder.
+        - VS will automatically build a folder called "out" and will identify that this step has been completed.
+        - now, from the "Startup Item" dropdown, select "mips_disassembler.exe"
+        - then in the toolbar find "Build" and select "Build All"
+            - a status in the Output should show "Build All succeeded."
+        - to run the executable, a file is required. Provided in "TestCases" are several test files and their corresponding solutions.
+            - once a file is selected, copy it's filepath
+            - in the powershell command window, enter 
+                
+                .\out\build\x64-Debug\mips_disassembler.exe
+            
+              followed by the filepath in quotations.
+            - an example powershell line looks like this:
+
+                .\out\build\x64-Debug\mips_disassembler.exe ".\TestCases\test_case3.obj"
+
+            - the line should run and print out, 
+                
+                "successfully created '*.asm'"
+            
+            - the file can be found in the filepath where the *.obj is found.
+            

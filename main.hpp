@@ -33,6 +33,7 @@
 // custom type definitions
 typedef enum {R, I, J} format_t;
 typedef pair<string, format_t> opcode_t;
+typedef int register_t;
 
 // gloabl variables
 bool hasError = false;
