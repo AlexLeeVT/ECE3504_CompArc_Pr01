@@ -38,6 +38,7 @@ opcode_t findSecondaryCode(const int op) {
     return opcode;
 }
 
+// convert a number to a register name
 string convertNumToRegisterName(const int reg) {
     auto it = register_names.find(reg);
     // out of bounds error. Return nothing.
@@ -160,17 +161,15 @@ string decompileI(const string mneomic, const int opcode) {
     return word;
 }
 
-// modified from https://www.geeksforgeeks.org/check-if-a-string-represents-a-hexadecimal-number-or-not/
-bool str_is_hex(string s)
+// checks if a string is a hexidecimal digit
+bool str_is_hex(string str)
 {
-    // Size of string
-    int n = s.length();
- 
     // Iterate over string
-    for(int i = 0; i < n; i++)
-    {
-        char ch = s[i];
-        if(!isxdigit(ch))
+    for(int i = 0; i < str.length(); i++) {
+        char c = str[i];
+
+        // check if it's a hexidecimal digit or not
+        if(!isxdigit(c))
             return false;
     }
     return true;
@@ -214,6 +213,23 @@ list<string> readFile(const string fileName) {
     inFile.close();
 
     return list;
+}
+
+void writeToFile(string fileName, vector<string> lines) {
+    // change the filename 
+    fileName = fileName.substr(0, fileName.size() - 4);
+    fileName += ".asm";
+
+    // create file and write every line of MIPS code to it
+    ofstream file(fileName);
+    for(int i = 0; i < lines.size(); i++) {
+        file << lines[i];
+    }
+    // flush stream
+    file.close();
+
+    // confirm file is created
+    cout << "successfully created \"" + fileName + "\"\n";
 }
 
 int main(int argc, char** argv) {
@@ -318,12 +334,9 @@ int main(int argc, char** argv) {
             // add the line to the assembly code
             decompiledCode.insert(it, addrStr + ":\n");
         }
-        // DEBUG ---------------------------
-        for(int i = 0; i < decompiledCode.size(); i++) {
-            cout << decompiledCode[i];
-        }
 
-        // put into a file
+        // finally, put into a file
+        writeToFile(argv[1], decompiledCode);
     }
     return 0;
 }

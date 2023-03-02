@@ -30,20 +30,23 @@
 #define IMM_BITMASK     (65535)
 #define ADDR_BITMASK    (67108863)
 
+// custom type definitions
 typedef enum {R, I, J} format_t;
-
 typedef pair<string, format_t> opcode_t;
 
-list<int> branchAddresses;
-
+// gloabl variables
 bool hasError = false;
-
 int currentLine = 1;
 
+// tables
 unordered_map<int, string> primary_code;
 unordered_map<int, string> secondary_code;
 unordered_map<int, string> register_names;
 
+// lists
+list<int> branchAddresses;
+
+// initialize lookup table
 void initializeMaps() {
     secondary_code[0x20] = "add";
     primary_code[0x08] = "addi";
