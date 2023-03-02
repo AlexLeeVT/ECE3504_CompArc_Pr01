@@ -121,16 +121,16 @@ string decompileI(const string mneomic, const int opcode) {
                 // add to the list
                 branchAddresses.push_back(offset);
             
-                // format: mneomic  rt, addr_####
+                // format: mneomic  rs, rt, addr_####
                 word = "\t" + 
                         mneomic + "\t" +
+                        rsStr + ", " +
                         rtStr + ", " +
                         address + "\n";
             } else {
                 
                 // DEBUG --------------
                 // cout << "address offset too large.";
-                
                 word = "";
             }
         } else if( (mneomic == "lbu") || (mneomic == "lhu") || (mneomic == "ll") || (mneomic == "lw") ||
@@ -158,6 +158,22 @@ string decompileI(const string mneomic, const int opcode) {
     }
 
     return word;
+}
+
+// modified from https://www.geeksforgeeks.org/check-if-a-string-represents-a-hexadecimal-number-or-not/
+bool str_is_hex(string s)
+{
+    // Size of string
+    int n = s.length();
+ 
+    // Iterate over string
+    for(int i = 0; i < n; i++)
+    {
+        char ch = s[i];
+        if(!isxdigit(ch))
+            return false;
+    }
+    return true;
 }
 
 // read a file and put the contents into a list
@@ -219,7 +235,11 @@ int main(int argc, char** argv) {
         string decompiledStr = "";
 
         // error if there is a length issue.
-        if(hexCode.length() > 8) {
+        if(!str_is_hex(hexCode)) {
+            cout << hexCode << " is not a hexadecimal" << endl;
+            hasError = true;
+        }
+        else if(hexCode.length() > 8) {
             hasError = true;
             cout << "Cannot disassemble " << hexCode << " at line " << currentLine << ": word too long" << endl;   // error printout due to hexcode length > 8
         } else {
@@ -304,7 +324,6 @@ int main(int argc, char** argv) {
         }
 
         // put into a file
-
     }
     return 0;
 }
