@@ -74,8 +74,6 @@ string decompileR(const string mneomic, const int opcode) {
                     rtStr + ", " +
                     shamtStr + "\n";
         } else { // if shamt IS larger than 4 bits, then there is an error.
-            // DEBUG -------------------
-            cout << "shamt out of bounds\t";
             word = "";
         }
     } else {
@@ -87,8 +85,6 @@ string decompileR(const string mneomic, const int opcode) {
                 rtStr + "\n";
         
         if(rdStr == "" || rsStr == "" || rtStr == "") {
-            // DEBUG ---------------------
-            cout << "register out of bounds\t";
             word = "";
         }
     }
@@ -129,9 +125,6 @@ string decompileI(const string mneomic, const int opcode) {
                         rtStr + ", " +
                         address + "\n";
             } else {
-                
-                // DEBUG --------------
-                // cout << "address offset too large.";
                 word = "";
             }
         } else if( (mneomic == "lbu") || (mneomic == "lhu") || (mneomic == "ll") || (mneomic == "lw") ||
@@ -151,10 +144,6 @@ string decompileI(const string mneomic, const int opcode) {
         }
     } else {
         // error, the registers are out of bounds or the immediate number is larger than 16 bits.
-        
-        // DEBUG ---------------------
-        // cout << "register out of bounds OR imm out of bounds\t";
-        
         word == "";
     }
 
@@ -183,9 +172,6 @@ list<string> readFile(const string fileName) {
     if(inFile.is_open()) {
         auto const pos = fileName.find_last_of('.');
         const auto leaf = fileName.substr(pos + 1);
-        
-        // DEBUG --------------
-        // cout << leaf << endl << endl;
 
         if(leaf != "obj") {
             hasError = true;
@@ -257,7 +243,7 @@ int main(int argc, char** argv) {
         }
         else if(hexCode.length() > 8) {
             hasError = true;
-            cout << "Cannot disassemble " << hexCode << " at line " << currentLine << ": word too long" << endl;   // error printout due to hexcode length > 8
+            cout << "Cannot disassemble " << hexCode << " at line " << currentLine << endl;   // error printout due to hexcode length > 8
         } else {
             // convert string to hex and put it into opcode
             ss << hex << hexCode;
@@ -274,9 +260,6 @@ int main(int argc, char** argv) {
                 mneomic = findPrimaryCode(op);
             }
             
-            // DEBUG CODE ---------------------------------
-            // cout << "hexcode: " << hexCode << " | Code: " << mneomic.first << " | Format: " << ((mneomic.second == R)?"R":"I") << endl;
-
             if(mneomic.first != "") {
                 // calculate the string to be printed and store into an array
                 if(mneomic.second == R) {
@@ -289,13 +272,11 @@ int main(int argc, char** argv) {
                 // decompile error check
                 if(decompiledStr == "") {
                     hasError = true;
-                    // DEBUG --------------------- remove the ending statement
-                    cout << "Cannot disassemble " << hexCode << " at line " << currentLine << ": decompile error" << endl;
+                    cout << "Cannot disassemble " << hexCode << " at line " << currentLine << endl; // 
                 }
             } else {
                 hasError = true;
-                // DEBUG --------------------- remove the ending statement
-                cout << "Cannot disassemble " << hexCode << " at line " << currentLine << ": mneomic not found" << endl; // mneomic error check
+                cout << "Cannot disassemble " << hexCode << " at line " << currentLine << endl; // mneomic error check
             }
             
         }
@@ -308,9 +289,6 @@ int main(int argc, char** argv) {
 
     // make a file with the same name and .asm at the end
     if(!hasError) {
-        // DEBUG ----------------------------
-        // cout << endl << "Make file" << endl;
-
         // sort the branch addresses without duplicates
         branchAddresses.unique();
         branchAddresses.sort();
